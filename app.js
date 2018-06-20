@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 
+
 const app = express();
 const port = 8080;
 
@@ -33,7 +34,7 @@ app.engine('handlebars', exphbs({
 
 app.set('view engine', 'handlebars');
 
-//Methos override midleware
+//Methods override midleware
 app.use(methodOverride('_method'));
 
 //#####  ROUTES ########
