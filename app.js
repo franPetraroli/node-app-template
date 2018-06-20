@@ -7,6 +7,10 @@ const methodOverride = require('method-override');
 const app = express();
 const port = 8080;
 
+//Body parser middelware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 //Load ideas Routes
 const ideas = require('./routes/ideas');
 app.use('/ideas', ideas);
@@ -21,10 +25,6 @@ mongoose.connect('mongodb://frapetim:telecono0@ds231070.mlab.com:31070/dang').th
 }).catch(err => {
   console.log(err);
 });
-
-//Body parser middelware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 //Handlebars midleware
 app.engine('handlebars', exphbs({

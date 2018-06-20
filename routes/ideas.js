@@ -64,7 +64,7 @@ router.post('/', (req, res) => {
     res.render('ideas/add',{
       errors,
       title: req.body.title,
-      details: req.body.deta
+      details: req.body.details
     });
   }else{
     let newUser = {
@@ -77,6 +77,8 @@ router.post('/', (req, res) => {
       res.redirect('/ideas')
     })
   }
+  // res.send(req.body);
+  
 })
 
 module.exports = router;
