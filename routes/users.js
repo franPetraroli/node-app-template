@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const passport = require('passport')
 
+router.use(passport.initialize());
+
 //Look for Idea model
 require('../models/User');
 const User = mongoose.model('user')
@@ -17,6 +19,12 @@ router.get('/login', (req, res) => {
 router.get('/register', (req, res) => {
   res.render('users/register')
 })
+
+router.post('/login', 
+  passport.authenticate('local', { 
+      successRedirect: '/ideas',
+      failureRedirect: '/users/login' 
+  }));
 
 router.post('/register', (req, res) => {
   let errors = []

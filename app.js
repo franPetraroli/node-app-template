@@ -3,7 +3,7 @@ const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-
+const passport = require('passport')
 
 const app = express();
 const port = 8080;
@@ -19,6 +19,11 @@ app.use('/ideas', ideas);
 //Load User Routes
 const users = require('./routes/users');
 app.use('/users', users);
+
+//Passport config and middleware
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport')(passport)
 
 //Connect to MongoDb
 mongoose.connect('mongodb://frapetim:telecono0@ds231070.mlab.com:31070/dang').then(() => {
