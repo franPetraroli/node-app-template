@@ -1,4 +1,4 @@
-Template app with complete login and routes guards
+Template app with complete login and routes guards and CRUD functionalities
 
 It uses Node.js/Express/Passport/bcrypt/MongoDB(Mlab)
 
