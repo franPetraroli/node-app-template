@@ -18,13 +18,16 @@ router.get('/login', (req, res) => {
 //Register route
 router.get('/register', (req, res) => {
   res.render('users/register')
-})
+});
 
-router.post('/login', 
+router.post('/login', (req,res,next)=>{
   passport.authenticate('local', { 
-      successRedirect: '/ideas',
-      failureRedirect: '/users/login' 
-  }));
+    successRedirect: '/ideas',
+    failureRedirect: '/users/login',
+    failueFlash: true
+  })(req,res,next)
+  req.flash('success_msg', `Your are logged in as ${req.body.email}`)
+});
 
 router.post('/register', (req, res) => {
   let errors = []
@@ -76,6 +79,12 @@ router.post('/register', (req, res) => {
       }
     })
   }
+})
+
+router.get('/logout', (req,res)=>{
+  req.logout()
+  req.flash('success_msg', 'You are logged out')
+  res.redirect('/users/login')
 })
 
 module.exports = router;

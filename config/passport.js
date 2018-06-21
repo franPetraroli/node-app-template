@@ -10,20 +10,16 @@ module.exports = function(passport){
   passport.use(new LocalStrategy({usernameField:'email'}, (email, password, done )=>{
     User.findOne({email:email}).then(user=>{
       if(!user){
-        console.log('not found');
-        // return done(null, false, {error:'No user found'})
+        // console.log('not found');
+        return done(null, false, {message:'No user found'})
       }else{
-        //if password match
-        console.log('user found');
-        
+        //if password match        
         bcrypt.compare(password, user.password, (err, isMatch)=>{
           if(err) throw err;
-          if(isMatch){
-            console.log('password match');
-            
+          if(isMatch){            
             done(null, user)
           }else{
-            done(null,false, console.log('password dont march'))
+            done(null,false, {message:'Password Incorrect'})
           }
         })
       }

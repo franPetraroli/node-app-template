@@ -4,9 +4,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const passport = require('passport')
+const flash = require('connect-flash')
+const session = require('express-session')
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 //Body parser middelware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,19 +16,18 @@ app.use(bodyParser.json());
 
 //Load ideas Routes
 const ideas = require('./routes/ideas');
-app.use('/ideas', ideas);
+
 
 //Load User Routes
 const users = require('./routes/users');
-app.use('/users', users);
 
-//Passport config and middleware
-app.use(passport.initialize());
-app.use(passport.session());
+
+//import Passport config and middleware
 require('./config/passport')(passport)
+const db = require('./config/database')
 
 //Connect to MongoDb
-mongoose.connect('mongodb://frapetim:telecono0@ds231070.mlab.com:31070/dang').then(() => {
+mongoose.connect(db.mongoURI).then(() => {
   console.log('MongoDb Connected');
 }).catch(err => {
   console.log(err);
@@ -42,6 +43,29 @@ app.set('view engine', 'handlebars');
 //Methods override midleware
 app.use(methodOverride('_method'));
 
+// Express session middleware
+app.use(session({
+  secret: 'mimi cat',
+  resave: true,
+  saveUninitialized: true,
+}))
+
+//Passport config and middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Connect flash middleware
+app.use(flash())
+
+//Global Variables
+app.use((req,res,next)=>{
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.error_msg = req.flash('error_msg')
+  res.locals.error = req.flash('error')
+  res.locals.user = req.user || null
+  next()
+})
+
 //#####  ROUTES ########
 
 //Handle get requesdt for home page
@@ -56,6 +80,9 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
   res.render('about')
 })
+
+app.use('/ideas', ideas);
+app.use('/users', users);
 
 //Start the server
 app.listen(port, () => {

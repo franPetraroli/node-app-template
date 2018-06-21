@@ -2,6 +2,10 @@
   <li class="nav-item">
     <a class="nav-link active" href="/">Home</a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/about">About</a>
+  </li>
+  {{#if user}} 
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Ideas</a>
     <div class="dropdown-menu">
@@ -10,12 +14,14 @@
     </div>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="/about">About</a>
+    <a class="nav-link" href="/users/logout">Log Out</a>
   </li>
+  {{else}}
   <li class="nav-item">
     <a class="nav-link" href="/users/login">Log In</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="/users/register">Sign Up</a>
   </li>
+  {{/if}}
 </ul>
